@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Girivan Hikes</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="guide_registration.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.2)), url("https://discovervail.com/app/uploads/2020/03/VLMD_Hero__Hiker.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            padding-top: 98px; /* Adjust based on navbar height */
+            margin-top: 19%;
+        }
+         /* Navbar */
+         nav {
+            position: fixed; /* Makes the navbar fixed */
+            top: 0; /* Sticks it to the top */
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Ensures transparency */
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 15px 50px;
+            z-index: 1000; /* Ensures it stays above other content */
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+          nav ul {
+              list-style: none;
+              display: flex;
+              gap: 20px;
+              padding: 0;
+        margin: 0 auto ;
+          }
+        
+          nav ul li {
+            display: inline-block;
+          }
+        
+          nav ul li a {
+              color: white;
+              text-decoration: none;
+              font-weight: bold;
+          }
+        
+
+        .h-txt {
+            max-width: 100%;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .h-txt h1 {
+            font-size: 6em;
+            font-family: 'Poppins';
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: white;
+            text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
+            animation: fadeInScale 2s ease-in-out;
+            display: block;
+            white-space: nowrap;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* H2 Text Animation */
+        
+
+        .split-text {
+            display: flex;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: rgb(190, 211, 237);
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .left-text {
+            animation: slideLeft 2s ease-out forwards;
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .right-text {
+            animation: slideRight 2s ease-out forwards;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        @keyframes slideLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideRight {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .h-txt a{
+            text-decoration: none;
+            background: indianred;
+            color: white;
+            padding: 10px 20px;
+            letter-spacing: 5px;
+            transition: 0.4s;
+        }
+        .h-txt a:hover{
+            background: transparent;
+            border: 1px solid #3a3a8a;
+        }
+       
+        #registerButton{
+            text-decoration: none;
+                    color: white;
+                    padding: 10px 20px;
+                    font-size: 20px;
+                    background: #3a3a8a;
+                    border-radius: 8px;
+                    transition: 0.4s; 
+        }
+        #registerButton:hover{
+            background: transparent;
+            border: 2px solid #3a3a8a;
+        }
+        #send:hover{
+            cursor:pointer;
+            box-shadow: 0 0 10px white;
+        }
+
+        /* Button Styling */
+        .explore-btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background: #ff5733;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .explore-btn:hover {
+            background: #e14b2d;
+        }
+
+                /*contact section*/
+      .contact{
+        margin-top: 1vh; /* Appears only after scrolling */
+        background: #ffffff;
+        padding: 50px 0;
+        text-align: center;
+        margin-left: 10%;
+        margin-right: 10%;
+      }
+
+      .contact-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #E3F2FD;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: #333333;
+        transition: all 0.3s ease-in-out;
+      }   
+      .contact-container:hover {
+        transform: scale(1.05); /* Slightly enlarges the bar */
+        box-shadow:rgba(255, 251, 251, 0.526);; /* Glowing effect */
+      }
+    .contact-container h1 {
+        text-align: center;
+        color: #1E3A8A;
+      }
+      .contact-container p {
+        text-align: center;
+        color: #1E3A8A;
+      }
+      .contact-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .contact-container label {
+        font-weight: bold;
+        color: #1E3A8A;
+      }
+      .contact-container input, textarea, button {
+        font-size: 16px;
+        padding: 10px;
+        border: 1px solid rgb(77, 173, 229);
+        border-radius: 5px;
+        width: 100%;
+      }
+      .contact-container textarea {
+        resize: none;
+        height: 100px;
+      }
+      .contact-container button {
+        background-color: #0277BD;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .contact-container button:hover {
+        background-color: #0278bd9e;
+      }
+      .success-message {
+        display: none;
+        text-align: center;
+        color: #4caf50;
+        font-weight: bold;
+      }
+
+    /*faq*/
+     .faq{
+      font-family: Arial, sans-serif;
+      padding-top: 5%;
+      background-color:#ffffff;
+      margin-left: 10%;
+      margin-right: 10%;
+     }
+      .faq-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #F3E5F5;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: #161515;
+        transition: all 0.3s ease-in-out;
+      }
+      .faq-container:hover {
+        transform: scale(1.05); /* Slightly enlarges the bar */
+        box-shadow:rgba(255, 251, 251, 0.526);; /* Glowing effect */
+      }
+      h1 {
+        text-align: center;
+        color: #4A148C;
+      }
+      .faq-item {
+        border-bottom: 1px solid #ddd;
+        padding: 15px 0;
+      }
+      .faq-question {
+        font-weight: bold;
+        cursor: pointer;
+        color: #4A148C;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .faq-question:hover {
+        color: #17252a;
+      }
+      .faq-answer {
+        display: none;
+        padding: 10px 0;
+        color: #4A148C;
+      }
+      .faq-answer p {
+        margin: 0;
+      }
+      .faq-toggle-icon {
+        font-size: 18px;
+        transition: transform 0.2s ease-in-out;
+      }
+      .faq-toggle-icon.rotate {
+        transform: rotate(180deg);
+      }
+
+  /*upcomming trek section*/
+      
+  .upcoming-treks{                                               /*upcomming trek section*/
+    margin-top: 80vh;
+    background: rgba(255, 251, 251, 0.779);
+    padding: 70px 0;
+    text-align: center;
+    height: auto;
+    margin-left: 3.5%;
+    margin-right: 3.5%;
+  }
+
+  .upcoming-treks h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    font-family: 'sans-serif';
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+  .trek-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    gap: 20px;
+    padding: 20px;
+    white-space: nowrap;
+    width: 80%;
+    scroll-padding: 20px;
+  }
+
+/* Hide scrollbar */
+.trek-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Arrow Navigation */
+.arrow-container {
+  position: absolute;
+    top: 50%;
+    width: 100%;  /* Ensures it doesn't shrink */
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.arrow {
+  background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 5px;  /* Smaller padding */
+    font-size: 12px;  /* Reduce icon size */
+    cursor: pointer;
+    border-radius: 50%;  /* Makes it circular */
+    width: 30px; /* Fix width */
+    height: 30px; /* Fix height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+}
+
+.arrow:hover {
+  background: rgba(0, 0, 0, 1);
+  transform: scale(1.1);
+}
+
+
+.left-arrow {
+  left: -40px;
+}
+
+.right-arrow {
+  right: -40px;
+}
+
+  .trek-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+}
+
+  .trek-card {
+    flex: 0 0 auto;
+    width: 280px;
+    min-height: 320px;
+    background: rgba(9,108,108);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .trek-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    transform: scale(0);
+    transition: transform 0.3s ease-in-out;
+  }
+  .trek-card:hover::before {
+    transform: scale(1);
+  }
+  .trek-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .trek-card h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    max-width: 100%;
+    margin-bottom: 10px;
+    white-space: normal;
+  }
+  .trek-card hr {
+    width: 80%;
+    margin: 5px auto;
+    border: none;
+    border-top: 2px solid rgba(0, 0, 0, 0.4);
+}
+  .trek-card p {
+    font-size: 1rem;
+    color: rgb(132, 218, 218);;
+    text-align: center;
+    margin: 5px 0;
+  }
+  .trek-card p strong {
+    font-weight: bold;
+}
+  .difficulty {
+    background: #3498db;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .trek-card button {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+
+  .trek-card button:hover {
+    background: #2c3e50;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    text-align: left;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-content h2 {
+    color: #3498db;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .modal-content p {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .modal-content a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .modal-content a:hover {
+    text-decoration: underline;
+  }
+  #profileDetails p {
+    margin: 8px 0;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .close-modal {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .close-modal:hover {
+    background: #2c3e50;
+  }     
+  @keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .trek-container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .arrow {
+        display: none;
+    }
+}
+
+/* section saperator*/
+.styled-line {
+  border-color:#ddd;
+  height: 20px;
+  background-color: rgb(187, 135, 79);
+  border-radius: 50px;
+  width: 90%;
+  margin-top: 10px;
+  margin-left: 90px;
+  transition: all 0.3s ease-in-out;
+}
+
+.styled-line:hover {
+  transform: scale(1.05); /* Slightly enlarges the bar */
+  box-shadow: 0px 0px 15px rgb(187, 135, 79); /* Glowing effect */
+}
+    </style>
+</head>
+<body>
+
+ 
+        <!-------------Navigation bar-->
+        <nav>
+            <ul>
+                <li><a href="exploretrek.html">Explore Treks &emsp;</a></li>
+                <li><a href="blog.html"> Explore Blog/Articles &emsp;</a></li>
+                <li><a href="exploreguide.html">Explore Guide &emsp;</a></li>
+                <li><a href="upcomingtrek.html"> Upcoming Treks &emsp;</a></li>
+                <li><a href="contact.html"> Contact &emsp;</a></li>
+                <li><a href="faq.html"> FAQs &emsp;</a></li>
+                <li><a href="regbutton.html"><button id="registerButton">LogIn</button></a></li>
+                <li><button id="logoutBtn" style="display: none;">Logout</button></li>
+                <li><button id="ProfileBtn" style="display: none;">My Profile</button></li>
+            </ul>
+        </nav>
+          <!------------------------Navigation bar finish-->    
+    
+              <!-- Profile Modal -->
+    <!-- Profile Modal -->
+<div class="modal" id="profileModal" style="display: none;">
+  <div class="modal-content">
+      <h2>Profile Details</h2>
+      <div id="profileDetails"></div>
+
+      <button class="close-modal" id="closeProfileModal">Close</button>
+  </div>
+</div>
+
+
+        <!------------------------hero section  -->  
+    <section class="h-txt">                                 
+        <h1>Girivan Hikes</h1><br>
+        <h2 class="split-text">
+            <span class="left-text">Find Your Path,</span>
+            <span class="right-text"> Embrace the Journey</span>
+        </h2><br>
+        <p>Turn Every Trek into a Story Worth Telling</p>
+        <button class="explore-btn">Start Exploring</button>
+    </section>
+
+    <!------------------------ upcoming treks -->  
+    <section class="upcoming-treks">     
+       <h2>Upcoming Treks</h2>
+       <hr>
+        
+       <div class="trek-wrapper">
+        <button class="arrow left-arrow">❮❮</button>
+        <div class="trek-container" id="trekContainer">
+            <!-- Dynamically Fetched Trek Cards Will Be Inserted Here -->
+        </div>
+        <button class="arrow right-arrow">❯❯</button>
+    </div>
+  
+  <!-- Modal -->
+  <div class="modal" id="detailsModal">
+    <div class="modal-content">
+      <h2 id="modalTrekName"></h2>
+      <p id="modalDate"></p>
+      <p id="modalLocation"></p>
+      <p id="modalGuideName"></p>
+      <p id="modalDifficulty"></p>
+      <p id="modalDuration"></p>
+      <p id="modalBaseCamp"></p>
+      <p id="modalAltitude"></p>
+      <p id="modalFees"></p>
+      <p id="modalTransport"></p>
+      <p id="modalContact"></p>
+      <p id="modalThingsToCarry"></p>
+      <button class="close-modal" id="closeModal">Close</button>
+    </div>
+  </div>
+
+    </section>
+
+    <hr class="styled-line">
+
+
+    <section class="contact">                    <!------------------------contact section  -->    
+      <div class="contact-container">
+            <h1>Contact Us</h1>
+            <p>We’d love to hear from you! Fill out the form below and we’ll get back to you soon.</p>
+            
+            <form id="contactForm">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        
+              <label for="email">Your Email</label>
+              <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" placeholder="Enter the subject" required>
+        
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+        
+              <button type="submit">Send Message</button>
+            </form>
+        
+            <div class="success-message" id="successMessage">
+              Thank you! Your message has been sent successfully.
+            </div>
+        </div>
+    </section>
+
+    <section class="faq">
+            <div class="faq-container">
+              <h1>FAQs</h1>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>What is Girivan Hikes?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Girivan Hikes is a platform where trekkers can connect with guides, explore trekking blogs, and find safe trekking opportunities.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>How can I contact a trekking guide?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>You can search for treks based on location and difficulty level, and use our chat feature to contact guides directly.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>Are there safety measures in place?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Yes, we prioritize safety by ensuring all guides are verified and provide emergency contact information for all treks.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>Is the platform free to use?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Creating an account and browsing treks is free. Some guides may charge fees for their services.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>How do I sign up for Girivan Hikes?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Click on the "Sign Up" button on the homepage and fill in your details to create a free account.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>Can I organize treks as a guide?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Yes, verified guides can create trekking events, specify schedules, and attract participants to join their treks.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>What types of treks are available on Girivan Hikes?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>We offer treks of various difficulty levels ranging from beginner to expert, including day hikes, mountain expeditions, and cultural walks.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>Can I cancel a booking?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Yes, cancellations can be made through your account. Refund policies depend on the guide’s terms and conditions.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>How do I write a blog on Girivan Hikes?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Once logged in, go to the "Write a Blog" section, share your trekking experiences, and publish your article for others to read.</p>
+                </div>
+              </div>
+          
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>Do you have customer support?</span>
+                  <span class="faq-toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                  <p>Yes, our customer support team is available 24/7. You can reach out through the "Contact Us" page for assistance.</p>
+                </div>
+              </div>
+            </div>
+          
+    </section>
+    <script type="module">
+       // ✅ Import Firebase modules
+// ✅ Import Firebase modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+// ✅ Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+  authDomain: "girivan-hikes.firebaseapp.com",
+  databaseURL: "https://girivan-hikes-default-rtdb.firebaseio.com",
+  projectId: "girivan-hikes",
+  storageBucket: "girivan-hikes.appspot.com",
+  messagingSenderId: "51100764191",
+  appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+  measurementId: "G-RWSFVY9KTW"
+};
+
+// ✅ Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const realtimeDb = getDatabase(app);
+const auth = getAuth(app);
+
+let currentUserEmail = null;
+
+// ✅ Check user login status
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById("registerButton").style.display = "none";
+    document.getElementById("logoutBtn").style.display = "block";
+    document.getElementById("ProfileBtn").style.display = "block";
+  } else {
+    document.getElementById("registerButton").style.display = "block";
+    document.getElementById("logoutBtn").style.display = "none";
+    document.getElementById("ProfileBtn").style.display = "none";
+  }
+});
+
+// ✅ Logout Function
+document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    alert("Logged out successfully!");
+    window.location.href = "regbutton.html"; // Redirect to login page
+  } catch (error) {
+    console.error("Logout Error:", error);
+  }
+});
+
+// ✅ **User Auth Check**
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUserEmail = user.email;
+    loadGuideChats(); // जब गाइड लॉगिन करेगा, चैट लोड होगी
+  }
+});
+
+// ✅ Fetch user Profile & Show Chat Icon if Guide
+document.getElementById("ProfileBtn")?.addEventListener("click", async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+  
+  const email = user.email;
+  let profileHtml = "<p>User not found.</p>";
+  let isGuide = false;
+
+  const guideSnapshot = await getDocs(collection(db, "guide"));
+  guideSnapshot.forEach(doc => {
+    if (doc.data().email === email) {
+      isGuide = true;
+      const guide = doc.data();
+      profileHtml = `
+        <p><strong>Name:</strong> ${guide.name}</p>
+        <p><strong>Email:</strong> ${guide.email}</p>
+        <p><strong>Phone no:</strong> ${guide.phone}</p>
+        <p><strong>Age:</strong> ${guide.age}</p>
+        <p><strong>Experience:</strong> ${guide.experience}</p>
+        <p><strong>Certifications:</strong> ${guide.certifications}</p>
+        <p><strong>Regions:</strong> ${guide.regions}</p>
+        <p><strong>Languages:</strong> ${guide.languages}</p>
+        <p><strong>Bio:</strong> ${guide.bio}</p>
+      `;
+    }
+  });
+
+  if (!isGuide) {
+    const trekkerSnapshot = await getDocs(collection(db, "trekker"));
+    trekkerSnapshot.forEach(doc => {
+      if (doc.data().email === email) {
+        const trekker = doc.data();
+        profileHtml = `
+          <p><strong>Name:</strong> ${trekker.name}</p>
+          <p><strong>Email:</strong> ${trekker.email}</p>
+          <p><strong>Phone no:</strong> ${trekker.phone}</p>
+          <p><strong>Age:</strong> ${trekker.age}</p>
+          <p><strong>Experience:</strong> ${trekker.experience}</p>
+          <p><strong>Regions:</strong> ${trekker.regions}</p>
+          <p><strong>Bio:</strong> ${trekker.bio}</p>
+        `;
+      }
+    });
+  }
+            document.getElementById("profileDetails").innerHTML = profileHtml;
+            document.getElementById("profileModal").style.display = "flex";
+});
+const trekContainer = document.getElementById('trekContainer');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+trekContainer.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - trekContainer.offsetLeft;
+    scrollLeft = trekContainer.scrollLeft;
+});
+
+trekContainer.addEventListener('mouseleave', () => {
+    isDown = false;
+});
+
+trekContainer.addEventListener('mouseup', () => {
+    isDown = false;
+});
+
+trekContainer.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - trekContainer.offsetLeft;
+    const walk = (x - startX) * 2; // Adjust for sensitivity
+    trekContainer.scrollLeft = scrollLeft - walk;
+});
+//-----------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", function () {
+  const trekContainer = document.getElementById("trekContainer");
+  const leftArrow = document.querySelector(".left-arrow");
+  const rightArrow = document.querySelector(".right-arrow");
+
+  const scrollAmount = 300; // Adjust as per card width
+
+  leftArrow.addEventListener("click", () => {
+      trekContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  });
+
+  rightArrow.addEventListener("click", () => {
+      trekContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  });
+});
+
+
+// ✅ Trek Listing Elements
+
+const detailsModal = document.getElementById("detailsModal");
+const modalTrekName = document.getElementById("modalTrekName");
+const modalDate = document.getElementById("modalDate");
+const modalLocation = document.getElementById("modalLocation");
+const modalGuideName = document.getElementById("modalGuideName");
+const modalDifficulty = document.getElementById("modalDifficulty");
+const modalDuration = document.getElementById("modalDuration");
+const modalBaseCamp = document.getElementById("modalBaseCamp");
+const modalAltitude = document.getElementById("modalAltitude");
+const modalFees = document.getElementById("modalFees");
+const modalTransport = document.getElementById("modalTransport");
+const modalContact = document.getElementById("modalContact");
+const modalThingsToCarry = document.getElementById("modalThingsToCarry");
+const closeModal = document.getElementById("closeModal");
+
+async function fetchTreks() {
+  const querySnapshot = await getDocs(collection(db, "treks"));
+  let treks = [];
+
+  querySnapshot.forEach((doc) => {
+    const trek = { id: doc.id, ...doc.data() };
+    treks.push(trek);
+  });
+
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
+
+  // Filter and sort upcoming treks
+  treks = treks.filter(trek => trek.date >= today).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // Clear previous content
+  trekContainer.innerHTML = "";
+
+  // Render upcoming treks
+  treks.forEach((trek) => {
+    const trekCard = document.createElement("div");
+    trekCard.classList.add("trek-card");
+    trekCard.innerHTML = `
+      <h2>${trek.title}</h2>
+      <p><strong>Date:</strong> ${trek.date}</p>
+      <p><strong>Location:</strong> ${trek.location}</p>
+      <p><strong>Guide:</strong> ${trek.guideName}</p>
+    `;
+
+    // ✅ Add click event to show details in modal
+    trekCard.addEventListener("click", () => {
+      modalTrekName.innerText = trek.title;
+      modalDate.innerText = `Date: ${trek.date}`;
+      modalLocation.innerText = `Location: ${trek.location}`;
+      modalGuideName.innerText = `Guide: ${trek.guideName}`;
+      modalDifficulty.innerText = `Difficulty: ${trek.difficulty}`;
+      modalDuration.innerText = `Duration: ${trek.duration}`;
+      modalBaseCamp.innerText = `Base Camp: ${trek.baseCamp}`;
+      modalAltitude.innerText = `Altitude: ${trek.altitude}`;
+      modalFees.innerText = `Fees: ${trek.fees}`;
+      modalTransport.innerText = `Transport: ${trek.transport}`;
+      modalContact.innerText = `Contact: ${trek.contact}`;
+      modalThingsToCarry.innerText = `Things to Carry: ${trek.thingsToCarry}`;
+
+      detailsModal.style.display = "flex";
+    });
+
+    trekContainer.appendChild(trekCard);
+  });
+}
+
+// ✅ Close modal when "Close" button is clicked
+closeModal.addEventListener("click", () => {
+  detailsModal.style.display = "none";
+});
+
+// ✅ Fetch and render treks on page load
+fetchTreks();
+
+
+// ✅ Contact Form Submission Handling
+if (document.getElementById("contactForm")) {
+  document.getElementById("contactForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !subject || !message) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    // ✅ Push data to Firebase Realtime Database
+    try {
+      await push(ref(realtimeDb, "contactMessages"), {
+        name,
+        email,
+        subject,
+        message,
+        timestamp: new Date().toISOString(),
+      });
+
+      console.log("Message saved successfully!");
+      document.getElementById("successMessage").style.display = "block";
+      document.getElementById("contactForm").reset();
+
+      setTimeout(() => {
+        document.getElementById("successMessage").style.display = "none";
+      }, 3000);
+    } catch (error) {
+      console.error("Error saving message:", error);
+      alert("Error: " + error.message);
+    }
+  });
+}
+      </script>
+        
+</body>
+</html>

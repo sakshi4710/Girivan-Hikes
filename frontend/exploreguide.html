@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide Profiles</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url('https://wallpaper.dog/large/20583577.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      color: #ffffff;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(0px) brightness(0.6);
+      z-index: -1;
+    }
+
+    nav {
+      position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10%;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 50px;
+            z-index: 1000;
+            margin-bottom: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    nav ul li { display: inline-block; }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: 0.3s;
+  }
+  
+  nav ul li a:hover {
+      background: linear-gradient(45deg, #556B2F, #708090);;
+      border-radius: 5px;
+  }
+
+  /* Hero Section */
+  @keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: -20px;
+}
+
+.hero h3 {
+    font-size: 3rem;
+    margin-bottom: 10px; /* Reduce this */
+    margin-bottom: 0px;
+    animation: fadeSlideIn 1.5s ease-out;
+}
+
+    #guide-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 94%;
+      align-items: center;
+      padding: 10px;
+      opacity: 0;
+      margin-top: -50px; 
+    padding-top: 0px;
+    animation: slideInFromRight 3s ease-out forwards;
+    }
+
+    @keyframes slideInFromRight {
+      from {
+          transform: translateX(100%);
+          opacity: 0;
+      }
+      to {
+          transform: translateX(0);
+          opacity: 1;
+      }
+  }
+    .guide-tab {
+      padding: 15px;
+      background: linear-gradient(45deg, #FFD700, #001F3F);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 80%;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .guide-tab:hover {
+      background: linear-gradient(45deg, #E07A5F, #2A9D8F);
+      transform: scale(1.05);
+    }
+
+  </style>
+</head>
+<body>
+  <nav>
+    <h1> Explore Guides </h1>
+    <ul>
+      <li><a href="index.html">Home &emsp;</a></li>
+      <li><a href="exploreguide.html">Explore Guide &emsp;</a></li>
+      <li><a href="exploretrek.html">Explore Treks</a></li>
+      <li><a href="blog.html">Explore Blogs</a></li>
+      <li><a href="faq.html">FAQs</a></li>
+    </ul>
+  </nav>
+        <!-- Hero Section -->
+        <header class="hero">
+          <h3>Connect with Experienced Trekking Experts</h3>
+      </header>
+  
+  <div id="guide-container"></div>
+  <div id="guide-details"></div>
+
+
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+        authDomain: "girivan-hikes.firebaseapp.com",
+        projectId: "girivan-hikes",
+        storageBucket: "girivan-hikes.appspot.com",
+        messagingSenderId: "51100764191",
+        appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+        measurementId: "G-RWSFVY9KTW",
+
+    };
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+    
+    let currentTrekkerId = ""; // Replace with actual trekker's ID
+    let currentGuideId = "";
+    let currentChatRoom = "";
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+          currentTrekkerId = user.uid;  // ✅ Store authenticated user's ID
+          console.log("User logged in:", currentTrekkerId);  // Debugging
+          showLogoutButton();
+      } else {
+          currentTrekkerId = "";  // ❌ Reset ID when user logs out
+          console.log("User not authenticated");
+          hideLogoutButton();
+      }
+  });
+
+  
+// ✅ Function to Show Logout Button
+function showLogoutButton() {
+  let logoutButton = document.createElement("button");
+  logoutButton.innerText = "Logout";
+  logoutButton.id = "logout-btn";
+  logoutButton.style.position = "fixed";
+  logoutButton.style.top = "120px";
+  logoutButton.style.right = "10px";
+  logoutButton.style.padding = "10px 20px";
+  logoutButton.style.background = "red";
+  logoutButton.style.color = "white";
+  logoutButton.style.border = "none";
+  logoutButton.style.cursor = "pointer";
+  logoutButton.onclick = logoutUser;  // Click event
+  document.body.appendChild(logoutButton);
+}
+
+// ✅ Function to Hide Logout Button
+function hideLogoutButton() {
+  let btn = document.getElementById("logout-btn");
+  if (btn) btn.remove();
+}
+
+// ✅ Logout Function
+function logoutUser() {
+  signOut(auth).then(() => {
+      alert("Logged out successfully!");
+      window.location.href = "index.html";
+  }).catch((error) => {
+      console.error("Logout Error: ", error);
+  });
+}
+
+    
+    // 📌 Function to Show Guide Details and Start Chat Button
+    async function showGuideDetails(guideId) {
+        const guideContainer = document.getElementById("guide-container");
+        const detailsContainer = document.getElementById("guide-details");
+        detailsContainer.innerHTML = "<p>Loading details...</p>";
+        detailsContainer.style.display = "block";
+        guideContainer.style.display = "none";
+    
+        try {
+            const guideDoc = await getDoc(doc(db, "guide", guideId));
+            if (!guideDoc.exists()) {
+                detailsContainer.innerHTML = "<p>Guide not found.</p>";
+                return;
+            }
+    
+            const guide = guideDoc.data();
+            currentGuideId = guideId;
+    
+            detailsContainer.innerHTML = `
+                <h2>${guide.name}</h2>
+                <p><strong>Bio:</strong> ${guide.bio}</p>
+                <p><strong>Experience:</strong> ${guide.experience} years</p>
+                <p><strong>Languages:</strong> ${guide.languages}</p>
+                <p><strong>Regions:</strong> ${guide.regions}</p>
+                <p><strong>Phone:</strong> ${guide.phone}</p>
+                <p><strong>Email:</strong> ${guide.email}</p>
+                <button onclick="startChat('${guideId}', '${guide.name}')">💬 Chat with ${guide.name}</button>
+                <button class="back-button" onclick="returnToList()">Back</button>
+            `;
+        } catch (error) {
+            detailsContainer.innerHTML = `<p class="error-message">Error loading details. Please try again later.</p>`;
+            console.error("Error fetching guide details:", error);
+        }
+    }
+    
+    // 📌 Function to Start Chat
+    window.startChat = function (guideId, guideName) {
+      currentChatRoom = [currentTrekkerId, guideId].sort().join("_"); // 🔥 Unique Room ID (Sorted IDs)
+      document.getElementById("chat-box").style.display = "block";
+      document.getElementById("chat-title").innerText = `Chat with ${guideName}`;
+      document.getElementById("chat-messages").innerHTML = ""; // Clear chat history
+      loadChatMessages();
+  };
+    
+    // 📌 Function to Send Messages
+    window.sendMessage = async function () {
+      const messageInput = document.getElementById("chat-input");
+      const messageText = messageInput.value.trim();
+      
+      if (!messageText) {
+          alert("Message cannot be empty!");
+          return;
+      }
+      if (!currentTrekkerId || !currentGuideId) {
+        alert("User not authenticated! Please login again.");
+        return;
+    }
+  
+      console.log("Sending message to:", currentChatRoom);  // Debugging
+  
+      try {
+          await addDoc(collection(db, "chats", currentChatRoom, "messages"), {
+              sender: currentTrekkerId,
+              receiver: currentGuideId,
+              message: messageText,
+              timestamp: Date.now()
+          });
+          messageInput.value = "";  // Clear input after sending
+      } catch (error) {
+          console.error("Error sending message:", error);
+          alert("Failed to send message. Please try again.");
+      }
+  };
+    
+    // 📌 Function to Load Chat Messages in Real-time
+    function loadChatMessages() {
+      const messagesRef = query(collection(db, "chats", currentChatRoom, "messages"), orderBy("timestamp"));
+      onSnapshot(messagesRef, (snapshot) => {
+          const chatMessagesDiv = document.getElementById("chat-messages");
+          chatMessagesDiv.innerHTML = "";
+          snapshot.forEach((doc) => {
+              const messageData = doc.data();
+              const messageElement = document.createElement("p");
+              messageElement.style.padding = "8px";
+              messageElement.style.margin = "5px";
+              messageElement.style.borderRadius = "5px";
+              messageElement.style.maxWidth = "70%";
+  
+              if (messageData.sender === currentTrekkerId) {
+                  messageElement.style.background = "#007BFF";
+                  messageElement.style.color = "white";
+                  messageElement.style.textAlign = "right";
+                  messageElement.style.marginLeft = "auto";
+              } else {
+                  messageElement.style.background = "#f1f1f1";
+                  messageElement.style.color = "black";
+                  messageElement.style.textAlign = "left";
+                  messageElement.style.marginRight = "auto";
+              }
+  
+              messageElement.innerText = `${messageData.message}`;
+              chatMessagesDiv.appendChild(messageElement);
+              chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+          });
+      });
+  }
+
+    
+    // 📌 Function to Return to Guide List
+    window.returnToList = function () {
+        document.getElementById("guide-container").style.display = "flex"; // Show guide list
+        document.getElementById("guide-details").innerHTML = ""; // Clear details
+        document.getElementById("guide-details").style.display = "none"; // Hide details section
+    };
+    
+    // 📌 Function to Load Guides
+    async function loadGuides() {
+      const guideContainer = document.getElementById("guide-container");
+      guideContainer.innerHTML = "<p>Loading guides...</p>";
+      try {
+          const querySnapshot = await getDocs(collection(db, "guide"));
+          guideContainer.innerHTML = "";
+          querySnapshot.forEach((doc) => {
+              const guide = doc.data();
+              const guideTab = document.createElement("div");
+              guideTab.className = "guide-tab";
+              guideTab.textContent = guide.name || "Unnamed Guide";
+              guideTab.onclick = () => showGuideDetails(doc.id);
+              guideContainer.appendChild(guideTab);
+          });
+      } catch (error) {
+          console.error("Error fetching guides:", error);
+      }
+  }
+    
+    loadGuides();
+      </script>
+</body>
+</html>

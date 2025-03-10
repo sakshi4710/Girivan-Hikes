@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sign In</title>
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: url('https://discovervail.com/app/uploads/2020/03/VLMD_Hero__Hiker.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+    }
+
+    /* Login Wrapper */
+    .login-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 50px;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Welcome Box */
+    .welcome-box {
+      flex: 1;
+      padding: 50px;
+      text-align: left;
+    }
+
+    .welcome-box h2 {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .welcome-box p {
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    /* Login Box */
+    .login-box {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 50px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .login-box h2 {
+      font-size: 32px;
+      margin-bottom: 25px;
+    }
+
+    /* Input Fields */
+    .input-box {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background: #2a2a5f;
+      color: #fff;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .input-box input::placeholder {
+      color: #ddd;
+    }
+
+    .input-box input:focus {
+      background: #3a3a8a;
+      box-shadow: 0 0 10px rgba(108, 108, 240, 0.5);
+    }
+
+    /* Options */
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .options a {
+      color: #a89cf4;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .options a:hover {
+      color: #fff;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(to right, #6c6cf0, #a89cf4);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: linear-gradient(to right, #a89cf4, #6c6cf0);
+    }
+
+    /* Signup Text */
+    .signup-text {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .signup-text a {
+      color: #a89cf4;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .signup-text a:hover {
+      color: #fff;
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 900px) {
+      .login-wrapper {
+        flex-direction: column;
+        text-align: center;
+      }
+      .welcome-box {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-wrapper">
+      <div class="welcome-box">
+        <h2>Welcome!</h2>
+        <p>To Our Girivan Hikes Website.</p>
+      </div>
+
+      <div class="login-box">
+        <h2>Log In</h2>
+        <form id="loginForm" method="post">
+          <div class="input-box">
+            <input type="email" id="email" placeholder="Email" required>
+          </div>
+          <div class="input-box">
+            <input type="password" id="password" placeholder="Password" required>
+          </div>
+          <div class="options">
+            <label><input type="checkbox"> Remember me</label>
+            <a href="#" id="forgotLink">Forgot password?</a>
+          </div>
+          <button type="submit" id="submit" class="btn">Log In</button>
+          <p class="signup-text">Don't have an account? <a href="user_registration.html">Sign up</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="module">
+         // Import Firebase Authentication
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+            authDomain: "girivan-hikes.firebaseapp.com",
+            projectId: "girivan-hikes",
+            storageBucket: "girivan-hikes.appspot.com",
+            messagingSenderId: "51100764191",
+            appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+            measurementId: "G-RWSFVY9KTW"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.getElementById("loginForm");
+
+            loginForm.addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent page refresh
+
+                const email = document.getElementById("email").value.trim();
+                const password = document.getElementById("password").value.trim();
+
+                if (!email || !password) {
+                    alert("Please enter both email and password.");
+                    return;
+                }
+
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    
+                    // Store user info in localStorage
+                    localStorage.setItem("userEmail", user.email);
+
+                    alert("Login successful! Redirecting...");
+                    window.location.href = "index.html"; // Redirect after successful login
+                } catch (error) {
+                    console.error("Login error:", error.message);
+                    alert("Login failed: " + error.message);
+                }
+            });
+        });
+</script>
+  
+</html>
+

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://images.unsplash.com/photo-1475483768296-6163e08872a1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhbXBmaXJlfGVufDB8fDB8fHww'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        
+        /* Dark Overlay for Better Readability */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+        
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10%;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 50px;
+            z-index: 1000;
+        }
+        
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 200px; /* Pushes everything else to the right */
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            margin-left: 1px; 
+        }
+
+        nav ul li {
+            display: inline-block;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            transition: 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background: #ff5722;
+            border-radius: 5px;
+        }
+        
+        /* Hero Section */
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 40vh;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px; /* Reduce this */
+            animation: fadeSlideIn 1.5s ease-out;
+        }
+        .hero p {
+            margin-bottom: 1px; /* Reduce this */
+            animation: fadeSlideIn 2s ease-out;
+        }
+        
+        /* Upload and Blog Section */
+        .upload-section {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: -20px; /* Reduce this value */
+            font-family: 'Arial', sans-serif;
+        }
+
+           /* Header Styling */
+           .upload-section h2 {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            color: #333;
+        }
+
+        .upload-section h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #d84315;
+            margin: 8px auto 0;
+        }
+
+         .blog-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 3px; /* Reduce this value */
+        }
+        
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 16px;
+            color: #444;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #f9f9f9;
+            transition: 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        input:focus, textarea:focus {
+            border-color: #d84315;
+            box-shadow: 0 0 6px rgba(216, 67, 21, 0.4);
+            outline: none;
+            background: white;
+        }
+
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+         /* Button */
+         .upload-btn {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 14px 18px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        .upload-btn i {
+            margin-right: 10px;
+            font-size: 22px;
+        }
+
+        .upload-btn:hover {
+            background: #e64a19;
+            box-shadow: 0px 4px 10px rgba(230, 74, 25, 0.3);
+        }
+
+        .upload-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0px 2px 5px rgba(230, 74, 25, 0.4);
+        }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .upload-section {
+        padding: 20px;
+    }
+
+    .upload-btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex-grow: 1;
+            padding: 12px;
+        }
+        
+        button {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            background: #e64a19;
+        }
+        
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Blog Explorer</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="exploreguide.html">Explore Guide</a></li>
+            <li><a href="exploretrek.html">Explore Treks</a></li>
+            <li><a href="upcomingtrek.html">Upcoming Treks</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Hero Section -->
+    <header class="hero">
+        <h1>Explore the World Through Our Treks</h1>
+        <p>Share your adventures and discover new stories</p>
+    </header>
+    
+    <!-- Blog Upload Section -->
+    <section class="upload-section">
+        <h2>Upload Your Blog</h2>
+        <label for="blog-title">Title</label>
+        <input type="text" id="blog-title" placeholder="Enter blog title">
+        
+        <label for="blog-author">Author Name</label>
+        <input type="text" id="blog-author" placeholder="Author Name">
+        
+        <label for="blog-email">Registered Email</label>
+        <input type="email" id="blog-email" placeholder="Enter registered email">
+        
+        <label for="blog-content">Content</label>
+        <textarea id="blog-content" placeholder="Enter blog content here..."></textarea>
+        
+        <button id="upload-btn"><i class="fas fa-upload"></i> Upload Blog</button>
+    </section>
+    
+    <!-- Blog Display Section -->
+    <section class="blog-container">
+        <h2>All Blogs</h2>
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search blogs...">
+            <i class="fas fa-search"></i>
+        </div>
+        <div id="blogs-list" class="blog-grid"></div>
+    </section>
+    <!-- Firebase & JS -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, arrayUnion, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+      authDomain: "girivan-hikes.firebaseapp.com",
+      projectId: "girivan-hikes",
+      storageBucket: "girivan-hikes.appspot.com",
+      messagingSenderId: "51100764191",
+      appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+      measurementId: "G-RWSFVY9KTW"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+//  Upload Blog
+document.getElementById("upload-btn").addEventListener("click", async () => {
+    const title = document.getElementById("blog-title").value;
+    const author = document.getElementById("blog-author").value;
+    const email = document.getElementById("blog-email").value;
+    const content = document.getElementById("blog-content").value;
+
+    if (!title || !author || !email || !content) {
+        alert("All fields are required");
+        return;
+    }
+
+    await addDoc(collection(db, "blogs"), {
+        title,
+        author,
+        email,
+        content,
+        reviews: [],
+        averageRating: 0
+    });
+
+    alert("Blog uploaded successfully!");
+});
+
+// Fetch & Display Blogs
+onSnapshot(collection(db, "blogs"), (snapshot) => {
+    const blogsList = document.getElementById("blogs-list");
+    blogsList.innerHTML = "";
+
+    snapshot.forEach(docSnap => {
+        const blog = docSnap.data();
+        const blogId = docSnap.id;
+        
+        blogsList.innerHTML += `
+            <div class='blog-card' id="blog-${blogId}">
+                <h3>${blog.title}</h3>
+                <p><strong>By:</strong> ${blog.author}</p>
+                <p>${blog.content}</p>
+                <p><strong>Average Rating:</strong> <span id="avg-rating-${blogId}">${blog.averageRating.toFixed(1) || "No Ratings Yet"}</span></p>
+                
+                <div id="stars-${blogId}">
+                    ${generateStars(blogId, blog.averageRating)}
+                </div>
+                
+                <input type="text" id="review-${blogId}" placeholder="Write a review">
+                <button onclick="submitReview('${blogId}')">Submit Review</button>
+                
+                <div id="reviews-${blogId}">
+                    ${renderReviews(blog.reviews)}
+                </div>
+            </div>
+        `;
+    });
+});
+
+//  Generate Star Rating UI
+function generateStars(blogId, avgRating) {
+    let starsHTML = "";
+    for (let i = 1; i <= 5; i++) {
+        starsHTML += `<span class="star" onclick="setRating('${blogId}', ${i})">${i <= avgRating ? "⭐" : "☆"}</span>`;
+    }
+    return starsHTML;
+}
+
+// Set Rating when User Clicks a Star
+window.setRating = (blogId, rating) => {
+    document.getElementById(`stars-${blogId}`).dataset.selectedRating = rating;
+    renderStars(blogId, rating);
+};
+
+//  Render Stars after Click
+function renderStars(blogId, rating) {
+    const starsContainer = document.getElementById(`stars-${blogId}`);
+    starsContainer.innerHTML = generateStars(blogId, rating);
+}
+
+// Submit Review & Update Firestore
+window.submitReview = async (blogId) => {
+    const selectedRating = parseInt(document.getElementById(`stars-${blogId}`).dataset.selectedRating || "0");
+    const reviewText = document.getElementById(`review-${blogId}`).value;
+    const userEmail = "user@example.com"; // Replace with actual logged-in user email
+
+    if (!selectedRating || selectedRating < 1 || selectedRating > 5) {
+        alert("Please select a valid rating (1-5 stars).");
+        return;
+    }
+
+    const blogRef = doc(db, "blogs", blogId);
+    const blogSnap = await getDoc(blogRef);
+    const blogData = blogSnap.data();
+
+    const newReview = { rating: selectedRating, review: reviewText || "No review provided.", reviewerEmail: userEmail };
+
+    await updateDoc(blogRef, {
+        reviews: arrayUnion(newReview),
+    });
+
+    const allRatings = [...blogData.reviews.map(r => r.rating), selectedRating];
+    const newAvgRating = allRatings.reduce((sum, r) => sum + r, 0) / allRatings.length;
+
+    await updateDoc(blogRef, { averageRating: newAvgRating });
+
+    document.getElementById(`avg-rating-${blogId}`).textContent = newAvgRating.toFixed(1);
+    renderStars(blogId, newAvgRating);
+
+    alert("Review submitted!");
+};
+
+// Render Reviews
+function renderReviews(reviews) {
+    if (!reviews || reviews.length === 0) {
+        return "<p>No reviews yet.</p>";
+    }
+
+    return reviews
+        .map(review => {
+            const reviewer = review.reviewerEmail || "Anonymous";
+            const rating = review.rating ? `${review.rating}⭐` : "No rating";
+            const reviewText = review.review ? review.review : "No review provided.";
+            return `<p><strong>${reviewer}:</strong> ${reviewText} (${rating})</p>`;
+        })
+        .join("");
+}
+
+</script>
+</body>
+</html>

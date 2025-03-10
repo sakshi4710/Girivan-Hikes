@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select User Type</title>
+    <style>
+        /* Background Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: url('https://imgcld.yatra.com/ytimages/image/upload/v1517483444/AdvNation/ANN_TRP700/lohagad-trek_1500977444_bjJsfq.jpg') no-repeat center center/cover;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Card Container */
+        .after_regbutton {
+            width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .after_regbutton:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        /* Button Styling */
+        .selection-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .selection-btn i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        #guideButton {
+            background: linear-gradient(135deg, #dc8904, #dc8904);
+            color: white;
+        }
+
+        #trekkerButton {
+            background: linear-gradient(135deg, #2F80ED, #2F80ED);
+            color: white;
+        }
+
+        .selection-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+    </style>
+    </head>
+<body>
+    <div class="after_regbutton">
+        <h2>Which type of user are you?</h2>
+        <button id="guideButton" class="selection-btn">
+            <a href="guide_profile.html">  <i>🧭</i> Guide</a>
+
+        </button>
+        <button id="trekkerButton" class="selection-btn">
+           <a href="trekker_profile.html">  <i>🥾</i> Trekker</a>
+        </button>
+    </div>
+
+    <div id="loadingMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); padding: 20px; border-radius: 10px; color: white;">
+        Saving your selection...
+    </div>
+
+</body>
+</html>

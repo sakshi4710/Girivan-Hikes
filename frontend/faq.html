@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs - Girivan Hikes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .faq-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .faq-item {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+    .faq-question {
+      font-weight: bold;
+      cursor: pointer;
+      color: #2b7a78;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-question:hover {
+      color: #17252a;
+    }
+    .faq-answer {
+      display: none;
+      padding: 10px 0;
+      color: #555;
+    }
+    .faq-answer p {
+      margin: 0;
+    }
+    .faq-toggle-icon {
+      font-size: 18px;
+      transition: transform 0.2s ease-in-out;
+    }
+    .faq-toggle-icon.rotate {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="faq-container">
+    <h1>FAQs</h1>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>What is Girivan Hikes?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Girivan Hikes is a platform where trekkers can connect with guides, explore trekking blogs, and find safe trekking opportunities.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>How can I contact a trekking guide?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>You can search for treks based on location and difficulty level, and use our chat feature to contact guides directly.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Are there safety measures in place?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes, we prioritize safety by ensuring all guides are verified and provide emergency contact information for all treks.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Is the platform free to use?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Creating an account and browsing treks is free. Some guides may charge fees for their services.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>How do I sign up for Girivan Hikes?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Click on the "Sign Up" button on the homepage and fill in your details to create a free account.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Can I organize treks as a guide?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes, verified guides can create trekking events, specify schedules, and attract participants to join their treks.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>What types of treks are available on Girivan Hikes?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>We offer treks of various difficulty levels ranging from beginner to expert, including day hikes, mountain expeditions, and cultural walks.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Can I cancel a booking?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes, cancellations can be made through your account. Refund policies depend on the guide’s terms and conditions.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>How do I write a blog on Girivan Hikes?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Once logged in, go to the "Write a Blog" section, share your trekking experiences, and publish your article for others to read.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Do you have customer support?</span>
+        <span class="faq-toggle-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes, our customer support team is available 24/7. You can reach out through the "Contact Us" page for assistance.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const answer = question.nextElementSibling;
+        const icon = question.querySelector('.faq-toggle-icon');
+
+        // Toggle the answer visibility
+        answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+
+        // Rotate the icon
+        icon.classList.toggle('rotate');
+      });
+    });
+  </script>
+</body>
+</html>
