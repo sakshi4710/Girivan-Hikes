@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
   <title>Guide Registration</title>
   <style>
     /* General Reset */
@@ -189,20 +191,17 @@
           <i class="fa fa-envelope"></i>
           <input type="email" id="email" placeholder="Email or Phone Number" required>
         </div>
-        <div class="input-box">
-          <i class="fa fa-lock"></i>
-          <input type="password" id="password" placeholder="Password" required>
-        </div>
-        <div class="input-box">
-          <i class="fa fa-lock"></i>
-          <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-        </div>
-
-     
+        <button type="button" id="verifyEmailBtn" style="display:none;">Verify Email</button>
+    <p id="verificationStatus" style="display:none; color:green;">Email Verified!</p>
+    <div class="input-box">
+      <i class="fa fa-lock"></i>
+      <input type="password" id="password" placeholder="Password" required>
+    </div>
+    <div class="input-box">
+      <i class="fa fa-lock"></i>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+    </div>
         <button type="submit" id="submit" class="register-btn">Sign In</button>
-
-      
-
         <p class="login-link">Already have an account? <a href="regbutton.html">Log in</a></p>
       </form>
     </div>
@@ -214,46 +213,97 @@
     // Import Firebase SDKs
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
 
-    // Firebase Configuration
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-        apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
-        authDomain: "girivan-hikes.firebaseapp.com",
-        projectId: "girivan-hikes",
-        storageBucket: "girivan-hikes.appspot.com",
-        messagingSenderId: "51100764191",
-        appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
-        measurementId: "G-RWSFVY9KTW"
+      apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+      authDomain: "girivan-hikes.firebaseapp.com",
+      databaseURL: "https://girivan-hikes-default-rtdb.firebaseio.com",
+      projectId: "girivan-hikes",
+      storageBucket: "girivan-hikes.firebasestorage.app",
+      messagingSenderId: "51100764191",
+      appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+      measurementId: "G-RWSFVY9KTW"
     };
-
+  
+   
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const auth = getAuth(app);
 
+    document.getElementById("email").addEventListener("input", function() {
+      document.getElementById("verifyEmailSection").style.display = this.value ? "block" : "none";
+  });
+
+  document.getElementById("verifyEmailBtn").addEventListener("click", function() {
+    const email = document.getElementById("email").value;
+    auth.createUserWithEmailAndPassword(email, "TemporaryPassword123!").then(userCredential => {
+      const user = userCredential.user;
+      user.sendEmailVerification().then(() => {
+        alert("Verification email sent. Please check your inbox and verify.");
+      });
+    }).catch(error => alert(error.message));
+  });
+
 
     // Event listener for registration
-    document.getElementById('submit').addEventListener("click", async function (event) {
-        event.preventDefault(); // Prevent form submission
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
-
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            alert("Account created successfully!");
-            window.location.href = "after_userReg.html"; // Redirect to homepage
-        } catch (error) {
-            alert(error.message);
-        }
-    });
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+  
+      if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+      }
+  
+      try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+  
+          // Send email verification
+          await user.sendEmailVerification();
+          alert("A verification email has been sent. Please check your inbox.");
+  
+          // Prevent further actions until verification
+          auth.signOut();
+  
+      } catch (error) {
+          alert(error.message);
+      }
+  });
+  
+  // Sign in user only if email is verified
+  document.getElementById("submit").addEventListener("click", function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+  
+      auth.signInWithEmailAndPassword(email, password)
+          .then(userCredential => {
+              const user = userCredential.user;
+              if (user.emailVerified) {
+                  alert("Login successful!");
+                  window.location.href = "dashboard.html"; // Redirect upon success
+              } else {
+                  alert("Please verify your email before proceeding.");
+                  auth.signOut(); // Prevent unverified login
+              }
+          })
+          .catch(error => alert(error.message));
+  });
+  
 </script>
 
 </body>
