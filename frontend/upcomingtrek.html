@@ -214,7 +214,8 @@ margin: 0 auto ;
           <li><a href="exploreguide.html">Explore Guide &emsp;</a></li>
           <li><a href="exploretrek.html">Explore Treks</a></li>
           <li><a href="blog.html">Explore Blogs</a></li>
-          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="map.html">Descover Map &emsp;</a></li>
+          <li><a href="faq.html">FAQs &emsp;</a></li>
         </ul>
       </nav>
  
@@ -244,22 +245,34 @@ margin: 0 auto ;
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
   
-    // ✅ Firebase Configuration
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
       apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
       authDomain: "girivan-hikes.firebaseapp.com",
+      databaseURL: "https://girivan-hikes-default-rtdb.firebaseio.com",
       projectId: "girivan-hikes",
-      storageBucket: "girivan-hikes.appspot.com",
+      storageBucket: "girivan-hikes.firebasestorage.app",
       messagingSenderId: "51100764191",
       appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
       measurementId: "G-RWSFVY9KTW"
     };
   
+    // Initialize Firebase
+    const analytics = getAnalytics(app);
+  
     // ✅ Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
   
+    const auth = getAuth(app);
+        
     const trekContainer = document.getElementById("trekContainer");
     const detailsModal = document.getElementById("detailsModal");
     const modalTrekName = document.getElementById("modalTrekName");
