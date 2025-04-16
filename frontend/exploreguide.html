@@ -102,6 +102,21 @@
     margin-bottom: 0px;
     animation: fadeSlideIn 1.5s ease-out;
 }
+#guide-details {
+  display: none;
+  background:  linear-gradient(145deg, #0a1a2f, #203354); /* Midnight Blue Gradient */ /* Dark Solid Background */
+  color: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px #3a3a8a; /* Neon glow */
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  margin-top: 40px;
+  border: 1px solid #3a3a8a; /* Neon Green Border */
+  transition: 0.3s ease-in-out;
+}
+
 
     #guide-container {
       display: flex;
@@ -155,12 +170,14 @@
     <h1> Explore Guides </h1>
     <ul>
       <li><a href="index.html">Home &emsp;</a></li>
-      <li><a href="exploreguide.html">Explore Guide &emsp;</a></li>
       <li><a href="exploretrek.html">Explore Treks</a></li>
       <li><a href="blog.html">Explore Blogs</a></li>
+      <li><a href="upcomingtrek.html">Upcoming Treks</a></li>
+      <li><a href="map.html">Descover Map &emsp;</a></li>
       <li><a href="faq.html">FAQs</a></li>
     </ul>
   </nav>
+
         <!-- Hero Section -->
         <header class="hero">
           <h3>Connect with Experienced Trekking Experts</h3>
@@ -173,94 +190,49 @@
   
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-        apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
-        authDomain: "girivan-hikes.firebaseapp.com",
-        projectId: "girivan-hikes",
-        storageBucket: "girivan-hikes.appspot.com",
-        messagingSenderId: "51100764191",
-        appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
-        measurementId: "G-RWSFVY9KTW",
-
+      apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+      authDomain: "girivan-hikes.firebaseapp.com",
+      databaseURL: "https://girivan-hikes-default-rtdb.firebaseio.com",
+      projectId: "girivan-hikes",
+      storageBucket: "girivan-hikes.firebasestorage.app",
+      messagingSenderId: "51100764191",
+      appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+      measurementId: "G-RWSFVY9KTW"
     };
-    
+  
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    
+    // Initialize Firebase
     const db = getFirestore(app);
-    const auth = getAuth();
-    
-    let currentTrekkerId = ""; // Replace with actual trekker's ID
-    let currentGuideId = "";
-    let currentChatRoom = "";
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-          currentTrekkerId = user.uid;  // ✅ Store authenticated user's ID
-          console.log("User logged in:", currentTrekkerId);  // Debugging
-          showLogoutButton();
-      } else {
-          currentTrekkerId = "";  // ❌ Reset ID when user logs out
-          console.log("User not authenticated");
-          hideLogoutButton();
-      }
-  });
-
-  
-// ✅ Function to Show Logout Button
-function showLogoutButton() {
-  let logoutButton = document.createElement("button");
-  logoutButton.innerText = "Logout";
-  logoutButton.id = "logout-btn";
-  logoutButton.style.position = "fixed";
-  logoutButton.style.top = "120px";
-  logoutButton.style.right = "10px";
-  logoutButton.style.padding = "10px 20px";
-  logoutButton.style.background = "red";
-  logoutButton.style.color = "white";
-  logoutButton.style.border = "none";
-  logoutButton.style.cursor = "pointer";
-  logoutButton.onclick = logoutUser;  // Click event
-  document.body.appendChild(logoutButton);
-}
-
-// ✅ Function to Hide Logout Button
-function hideLogoutButton() {
-  let btn = document.getElementById("logout-btn");
-  if (btn) btn.remove();
-}
-
-// ✅ Logout Function
-function logoutUser() {
-  signOut(auth).then(() => {
-      alert("Logged out successfully!");
-      window.location.href = "index.html";
-  }).catch((error) => {
-      console.error("Logout Error: ", error);
-  });
-}
-
-    
-    // 📌 Function to Show Guide Details and Start Chat Button
+    // Function to Show Guide Details
     async function showGuideDetails(guideId) {
         const guideContainer = document.getElementById("guide-container");
         const detailsContainer = document.getElementById("guide-details");
         detailsContainer.innerHTML = "<p>Loading details...</p>";
         detailsContainer.style.display = "block";
         guideContainer.style.display = "none";
-    
+
         try {
             const guideDoc = await getDoc(doc(db, "guide", guideId));
             if (!guideDoc.exists()) {
                 detailsContainer.innerHTML = "<p>Guide not found.</p>";
                 return;
             }
-    
+
             const guide = guideDoc.data();
-            currentGuideId = guideId;
-    
             detailsContainer.innerHTML = `
                 <h2>${guide.name}</h2>
                 <p><strong>Bio:</strong> ${guide.bio}</p>
@@ -269,7 +241,6 @@ function logoutUser() {
                 <p><strong>Regions:</strong> ${guide.regions}</p>
                 <p><strong>Phone:</strong> ${guide.phone}</p>
                 <p><strong>Email:</strong> ${guide.email}</p>
-                <button onclick="startChat('${guideId}', '${guide.name}')">💬 Chat with ${guide.name}</button>
                 <button class="back-button" onclick="returnToList()">Back</button>
             `;
         } catch (error) {
@@ -277,108 +248,36 @@ function logoutUser() {
             console.error("Error fetching guide details:", error);
         }
     }
-    
-    // 📌 Function to Start Chat
-    window.startChat = function (guideId, guideName) {
-      currentChatRoom = [currentTrekkerId, guideId].sort().join("_"); // 🔥 Unique Room ID (Sorted IDs)
-      document.getElementById("chat-box").style.display = "block";
-      document.getElementById("chat-title").innerText = `Chat with ${guideName}`;
-      document.getElementById("chat-messages").innerHTML = ""; // Clear chat history
-      loadChatMessages();
-  };
-    
-    // 📌 Function to Send Messages
-    window.sendMessage = async function () {
-      const messageInput = document.getElementById("chat-input");
-      const messageText = messageInput.value.trim();
-      
-      if (!messageText) {
-          alert("Message cannot be empty!");
-          return;
-      }
-      if (!currentTrekkerId || !currentGuideId) {
-        alert("User not authenticated! Please login again.");
-        return;
-    }
-  
-      console.log("Sending message to:", currentChatRoom);  // Debugging
-  
-      try {
-          await addDoc(collection(db, "chats", currentChatRoom, "messages"), {
-              sender: currentTrekkerId,
-              receiver: currentGuideId,
-              message: messageText,
-              timestamp: Date.now()
-          });
-          messageInput.value = "";  // Clear input after sending
-      } catch (error) {
-          console.error("Error sending message:", error);
-          alert("Failed to send message. Please try again.");
-      }
-  };
-    
-    // 📌 Function to Load Chat Messages in Real-time
-    function loadChatMessages() {
-      const messagesRef = query(collection(db, "chats", currentChatRoom, "messages"), orderBy("timestamp"));
-      onSnapshot(messagesRef, (snapshot) => {
-          const chatMessagesDiv = document.getElementById("chat-messages");
-          chatMessagesDiv.innerHTML = "";
-          snapshot.forEach((doc) => {
-              const messageData = doc.data();
-              const messageElement = document.createElement("p");
-              messageElement.style.padding = "8px";
-              messageElement.style.margin = "5px";
-              messageElement.style.borderRadius = "5px";
-              messageElement.style.maxWidth = "70%";
-  
-              if (messageData.sender === currentTrekkerId) {
-                  messageElement.style.background = "#007BFF";
-                  messageElement.style.color = "white";
-                  messageElement.style.textAlign = "right";
-                  messageElement.style.marginLeft = "auto";
-              } else {
-                  messageElement.style.background = "#f1f1f1";
-                  messageElement.style.color = "black";
-                  messageElement.style.textAlign = "left";
-                  messageElement.style.marginRight = "auto";
-              }
-  
-              messageElement.innerText = `${messageData.message}`;
-              chatMessagesDiv.appendChild(messageElement);
-              chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
-          });
-      });
-  }
 
-    
-    // 📌 Function to Return to Guide List
+    // Function to Return to Guide List
     window.returnToList = function () {
-        document.getElementById("guide-container").style.display = "flex"; // Show guide list
-        document.getElementById("guide-details").innerHTML = ""; // Clear details
-        document.getElementById("guide-details").style.display = "none"; // Hide details section
+        document.getElementById("guide-container").style.display = "flex"; 
+        document.getElementById("guide-details").innerHTML = ""; 
+        document.getElementById("guide-details").style.display = "none"; 
     };
-    
-    // 📌 Function to Load Guides
+        
+    // Function to Load Guides
     async function loadGuides() {
-      const guideContainer = document.getElementById("guide-container");
-      guideContainer.innerHTML = "<p>Loading guides...</p>";
-      try {
-          const querySnapshot = await getDocs(collection(db, "guide"));
-          guideContainer.innerHTML = "";
-          querySnapshot.forEach((doc) => {
-              const guide = doc.data();
-              const guideTab = document.createElement("div");
-              guideTab.className = "guide-tab";
-              guideTab.textContent = guide.name || "Unnamed Guide";
-              guideTab.onclick = () => showGuideDetails(doc.id);
-              guideContainer.appendChild(guideTab);
-          });
-      } catch (error) {
-          console.error("Error fetching guides:", error);
-      }
-  }
-    
+        const guideContainer = document.getElementById("guide-container");
+        guideContainer.innerHTML = "<p>Loading guides...</p>";
+        try {
+            const querySnapshot = await getDocs(collection(db, "guide"));
+            guideContainer.innerHTML = "";
+            querySnapshot.forEach((doc) => {
+                const guide = doc.data();
+                const guideTab = document.createElement("div");
+                guideTab.className = "guide-tab";
+                guideTab.textContent = guide.name || "Unnamed Guide";
+                guideTab.onclick = () => showGuideDetails(doc.id);
+                guideContainer.appendChild(guideTab);
+            });
+        } catch (error) {
+            console.error("Error fetching guides:", error);
+        }
+    }
+        
     loadGuides();
-      </script>
+</script>
+
 </body>
 </html>
