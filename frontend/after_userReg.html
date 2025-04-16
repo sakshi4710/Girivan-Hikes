@@ -1,111 +1,310 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select User Type</title>
-    <style>
-        /* Background Styling */
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            color: #fff;
-            background: url('https://imgcld.yatra.com/ytimages/image/upload/v1517483444/AdvNation/ANN_TRP700/lohagad-trek_1500977444_bjJsfq.jpg') no-repeat center center/cover;
-            position: relative;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <title>Guide Registration</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url('https://discovervail.com/app/uploads/2020/03/VLMD_Hero__Hiker.jpg') no-repeat center center/cover;
+      position: relative;
+    }
+    
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      filter: blur(8px);
+      z-index: -1;
+    }
 
-        /* Card Container */
-        .after_regbutton {
-            width: 400px;
-            padding: 30px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            transition: 0.3s;
-        }
+    .container {
+      display: flex;
+      width: 900px;
+      height: 500px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
-        .after_regbutton:hover {
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
+    /* Left Side - Image */
+    .left-box {
+      flex: 1;
+      background: url('https://wallpapercave.com/wp/wp8544468.jpg') no-repeat center center/cover;
+    }
 
-        h2 {
-            margin-bottom: 20px;
-            font-size: 22px;
-            color: #fff;
-        }
+    /* Right Side - Registration Form */
+    .right-box {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-        /* Button Styling */
-        .selection-btn {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .right-box h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #333;
+    }
 
-        .selection-btn i {
-            margin-right: 8px;
-            font-size: 20px;
-        }
+    .input-box {
+      position: relative;
+      margin-bottom: 15px;
+    }
 
-        #guideButton {
-            background: linear-gradient(135deg, #dc8904, #dc8904);
-            color: white;
-        }
+    .input-box input {
+      width: 100%;
+      padding: 12px 40px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      outline: none;
+    }
 
-        #trekkerButton {
-            background: linear-gradient(135deg, #2F80ED, #2F80ED);
-            color: white;
-        }
+    .input-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 18px;
+    }
 
-        .selection-btn:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-    </style>
-    </head>
+    .checkbox {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .checkbox input {
+      margin-right: 8px;
+    }
+
+    .register-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: linear-gradient(to right, #4CAF50, #2E7D32);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .register-btn:hover {
+      background: linear-gradient(to right, #2E7D32, #4CAF50);
+    }
+
+    .social-login {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .social-login p {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .social-icons img {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.1);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      text-decoration: none;
+      color: #2E7D32;
+      font-weight: bold;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 850px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .left-box {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
 <body>
-    <div class="after_regbutton">
-        <h2>Which type of user are you?</h2>
-        <button id="guideButton" class="selection-btn">
-            <a href="guide_profile.html">  <i>🧭</i> Guide</a>
 
-        </button>
-        <button id="trekkerButton" class="selection-btn">
-           <a href="trekker_profile.html">  <i>🥾</i> Trekker</a>
-        </button>
-    </div>
+  <div class="container">
+    <!-- Left Image Box -->
+    <div class="left-box"></div>
 
-    <div id="loadingMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); padding: 20px; border-radius: 10px; color: white;">
-        Saving your selection...
+    <!-- Right Registration Form -->
+    <div class="right-box">
+      <h2>Sign In</h2>
+      <form id="registerForm">
+        <div class="input-box">
+          <i class="fa fa-envelope"></i>
+          <input type="email" id="email" placeholder="Email or Phone Number" required>
+        </div>
+        <button type="button" id="verifyEmailBtn" style="display:none;">Verify Email</button>
+    <p id="verificationStatus" style="display:none; color:green;">Email Verified!</p>
+    <div class="input-box">
+      <i class="fa fa-lock"></i>
+      <input type="password" id="password" placeholder="Password" required>
     </div>
+    <div class="input-box">
+      <i class="fa fa-lock"></i>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+    </div>
+        <button type="submit" id="submit" class="register-btn">Sign In</button>
+        <p class="login-link">Already have an account? <a href="regbutton.html">Log in</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- FontAwesome Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script type="module">
+    // Import Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+      authDomain: "girivan-hikes.firebaseapp.com",
+      databaseURL: "https://girivan-hikes-default-rtdb.firebaseio.com",
+      projectId: "girivan-hikes",
+      storageBucket: "girivan-hikes.firebasestorage.app",
+      messagingSenderId: "51100764191",
+      appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+      measurementId: "G-RWSFVY9KTW"
+    };
+  
+   
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    document.getElementById("email").addEventListener("input", function() {
+      document.getElementById("verifyEmailSection").style.display = this.value ? "block" : "none";
+  });
+
+  document.getElementById("verifyEmailBtn").addEventListener("click", function() {
+    const email = document.getElementById("email").value;
+    auth.createUserWithEmailAndPassword(email, "TemporaryPassword123!").then(userCredential => {
+      const user = userCredential.user;
+      user.sendEmailVerification().then(() => {
+        alert("Verification email sent. Please check your inbox and verify.");
+      });
+    }).catch(error => alert(error.message));
+  });
+
+
+    // Event listener for registration
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+  
+      if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+      }
+  
+      try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+  
+          // Send email verification
+          await user.sendEmailVerification();
+          alert("A verification email has been sent. Please check your inbox.");
+  
+          // Prevent further actions until verification
+          auth.signOut();
+  
+      } catch (error) {
+          alert(error.message);
+      }
+  });
+  
+  // Sign in user only if email is verified
+  document.getElementById("submit").addEventListener("click", function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+  
+      auth.signInWithEmailAndPassword(email, password)
+          .then(userCredential => {
+              const user = userCredential.user;
+              if (user.emailVerified) {
+                  alert("Login successful!");
+                  window.location.href = "dashboard.html"; // Redirect upon success
+              } else {
+                  alert("Please verify your email before proceeding.");
+                  auth.signOut(); // Prevent unverified login
+              }
+          })
+          .catch(error => alert(error.message));
+  });
+  
+</script>
 
 </body>
 </html>
