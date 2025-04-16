@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Trekking Spots</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        
+        #map {
+            width: 90%;
+            height: 90vh;
+            border: 2px solid #333;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 7%;
+        }
+        nav {
+            position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 10%;
+                  background: rgba(0, 0, 0, 0.9);
+                  color: white;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 15px 50px;
+                  z-index: 1000;
+                  margin-bottom:100%;
+          }
+      
+          nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0 auto;
+          }
+      
+          nav ul li { display: inline-block; }
+          
+          nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            transition: 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background: linear-gradient(45deg, #556B2F, #708090);;
+            border-radius: 5px;
+        }
+      
+        /* Hero Section */
+        @keyframes fadeSlideIn {
+          from {
+              opacity: 0;
+              transform: translateY(30px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+      
+        .arrow-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            z-index: 1000;
+        }
+        .arrow-controls button {
+            padding: 8px;
+            border: none;
+            border-radius: 3px;
+            background-color: white;
+            cursor: pointer;
+            box-shadow: 0 0 3px rgba(0,0,0,0.3);
+            transition: background-color 0.2s;
+        }
+        .arrow-controls button:hover {
+            background-color: #ddd;
+        }
+        .arrow-controls .middle-row {
+            display: flex;
+            gap: 5px;
+        }
+        img {
+            max-width: 200px;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+         <!-------------Navigation bar-->
+         <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="exploretrek.html">Explore Treks &emsp;</a></li>
+                <li><a href="blog.html"> Explore Blog/Articles &emsp;</a></li>
+                <li><a href="exploreguide.html">Explore Guide &emsp;</a></li>
+                <li><a href="upcomingtrek.html"> Upcoming Treks &emsp;</a></li>
+                <li><a href="faq.html"> FAQs &emsp;</a></li>
+            </ul>
+        </nav>
+
+     
+          <!------------------------Navigation bar finish-->    
+    
+    <div id="map">
+        <div class="arrow-controls">
+            <button onclick="moveMap(0, -1)">⬆️</button>
+            <div class="middle-row">
+                <button onclick="moveMap(-1, 0)">⬅️</button>
+                <button onclick="moveMap(1, 0)">➡️</button>
+            </div>
+            <button onclick="moveMap(0, 1)">⬇️</button>
+        </div>
+    </div>
+
+    <script>
+        
+        var map = L.map('map').setView([19.7515, 75.7139], 7);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Example Spots with Image URLs
+        var spots = [
+        { name: 'Harshal Fort', lat: 20.0114, lon: 73.7310, img: 'https://64.media.tumblr.com/218ab2bdc5c4f15775121d99def8b17d/5edab27bdf372c32-3c/s1280x1920/512fa0e793fe2b18dfdcb3764841a15433893a77.jpg' },
+        { name: 'Agashi Fort', lat: 19.4170, lon: 72.7860, img:'https://i.pinimg.com/736x/bb/f6/0d/bbf60d259a93e38864bef41b6e8c46a0.jpg' },
+                { name: 'Ahmednagar Fort', lat: 19.0836, lon: 74.7336,img:'https://www.shutterstock.com/image-photo/land-fort-ahmednagar-district-maharashtra-600nw-1949075104.jpg' },
+                { name: 'Mandar Fort', lat: 19.2706, lon: 74.0217,img:'' },
+                { name: 'Ajinkyatara', lat: 17.6697, lon: 73.9871,img:'https://kaspatharflowervalley.com/wp-content/uploads/2023/06/ajinkyatara-1.jpg' },
+                { name: 'Akluj Fort', lat: 17.8790, lon: 75.0235,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLjYflSsxXGpJU83G4L_tYBxqLbyohWOi9cFX-nfspikWo9MRjDx60inhm_Mr8QhcRTTXPpW500hmL2yqApo7QKgY_s3_2puwxkldFJ5zYLpBWuPpD-_E4MsL2HQwHDazpkUKIUNw2fcg/s1500/Akluj+fort+facade.jpg' },
+                { name: 'Akola Fort', lat: 20.7096, lon: 77.0103 ,img:'https://i.pinimg.com/736x/50/80/11/50801171766688edf8bcd87f03719b5c.jpg'},
+                { name: 'Alang Fort', lat: 19.5669, lon: 73.6825,img:'https://escape2explore.s3.ap-south-1.amazonaws.com/UpdatedMedia/3ee6cba1-39d1-4b91-aefd-0984e785208e.webp' },
+                { name: 'Ambolgad', lat: 16.4290, lon: 73.3555,img:'https://www.trodly.com/pictures/attraction/5122.jpg' },
+                { name: 'Anjaneri', lat: 19.8651, lon: 73.5776,img:'https://www.thefreebird.net/wp-content/uploads/2024/11/09-2019-08-17.jpg' },
+                { name: 'Anjanvel Fort', lat: 17.4500, lon: 73.2000,img:'' },
+                { name: 'Ankai Fort', lat: 20.3301, lon: 74.4703,img:'https://www.re-thinkingthefuture.com/wp-content/uploads/2022/10/A8128-Ankai-Fort-in-Maharashtra.jpg?w=999' },
+                { name: 'Antur Fort', lat: 20.3725, lon: 75.3956 ,img:''},
+                { name: 'Arnala Fort', lat: 19.4651, lon: 72.7465 ,img:''},
+                { name: 'Asava Fort', lat: 19.3740, lon: 73.8785 ,img:''},
+                { name: 'Asheri Fort', lat: 19.7433, lon: 72.8527,img:'' },
+                { name: 'Aurangabad Fort', lat: 19.8762, lon: 75.3433,img:'' },
+                { name: 'Avandha Fort', lat: 20.4000, lon: 75.6000 ,img:''},
+                { name: 'Avchitgad', lat: 18.4780, lon: 73.1520,img:'' },
+                { name: 'Bahadur Fort', lat: 17.8356, lon: 73.6023,img:'' },
+                { name: 'Balapur Fort', lat: 20.6665, lon: 76.7770,img:'' },
+                { name: 'Ballarpur Fort', lat: 19.8440, lon: 79.3492,img:'' },
+                { name: 'Bankot Fort', lat: 17.9926, lon: 73.0352,img:'' },
+                { name: 'Belapur Fort', lat: 19.0244, lon: 73.0360 ,img:''},
+                { name: 'Bhagwantgad', lat: 16.1485, lon: 74.2878,img:'' },
+                { name: 'Bhairavgad', lat: 19.3891, lon: 73.6892 ,img:''},
+                { name: 'Bhamer Dhule', lat: 20.9825, lon: 74.0026,img:'' },
+                { name: 'Bharatgad', lat: 15.8933, lon: 73.9680,img:'' },
+                { name: 'Bhaskargad/Basgad', lat: 19.6251, lon: 73.6180,img:'' },
+                { name: 'Bhavangad Fort/Bhondgad', lat: 15.9333, lon: 73.7833,img:'' },
+                { name: 'Bhivgad Fort', lat: 18.9722, lon: 73.2567,img:'' },
+                { name: 'Bhorgiri Fort', lat: 19.0189, lon: 73.6848 ,img:''},
+                { name: 'Bhudargad Fort', lat: 16.2825, lon: 73.9944,img:'' },
+                { name: 'Bhupatgad Fort', lat: 19.6821, lon: 73.3354 },
+                { name: 'Bhushangad', lat: 17.5500, lon: 74.3833 },
+                { name: 'Birwadi Fort', lat: 18.4166, lon: 73.3260 },
+                { name: 'Bitangad', lat: 19.5363, lon: 73.7426 },
+                { name: 'Bombay Castle', lat: 18.9273, lon: 72.8333 },
+                { name: 'Castella de Aguada/Bandra Fort', lat: 19.0437, lon: 72.8226 },
+                { name: 'Chanda Fort', lat: 19.9497, lon: 79.2952 },
+                { name: 'Chandan Fort', lat: 18.0806, lon: 73.7461 },
+                { name: 'Chandragad/Dhavalgad', lat: 18.2581, lon: 73.6878 },
+                { name: 'Chandwad Fort', lat: 20.3386, lon: 74.2481 },
+                { name: 'Chauler Fort/Chaurgad', lat: 19.5754, lon: 73.9265 },
+                { name: 'Chavand Fort', lat: 19.5402, lon: 73.9583 },
+                { name: 'Dategad', lat: 17.5123, lon: 73.6738 },
+                { name: 'Dativare Fort', lat: 19.4103, lon: 72.7194 },
+                { name: 'Daulatabad Fort', lat: 19.9431, lon: 75.2130 },
+                { name: 'Dermal Fort', lat: 19.8780, lon: 75.3430 },
+                { name: 'Devgad Fort', lat: 16.3780, lon: 73.3720 },
+                { name: 'Dhak Bahiri', lat: 18.6573, lon: 73.4552 },
+                { name: 'Dhodap', lat: 20.3260, lon: 73.9232 },
+                { name: 'Dhunda Fort (Nashik)', lat: 19.9924, lon: 73.7801 },
+                { name: 'Dongri Fort', lat: 19.1848, lon: 72.7936 },
+                { name: 'Dronagiri Fort', lat: 18.9424, lon: 73.0910 },
+                { name: 'Dubergad Fort', lat: 19.5974, lon: 73.7981 },
+                { name: 'Durgabhandar', lat: 19.4889, lon: 72.7934 },
+                { name: 'Durgadi Fort', lat: 19.2445, lon: 73.1291 },
+                { name: 'Fatte Gad', lat: 15.9590, lon: 73.4630 },
+                { name: 'Fort George', lat: 18.9322, lon: 72.8334 },
+                { name: 'Gagangad', lat: 17.2578, lon: 73.7256 },
+                { name: 'Galna', lat: 21.0855, lon: 74.4850 },
+                { name: 'Gambhirgad', lat: 19.8817, lon: 72.9864 },
+                { name: 'Gawilghur', lat: 21.3856, lon: 77.3845 },
+                { name: 'Ghangad', lat: 18.5436, lon: 73.4189 },
+                { name: 'Ghargad', lat: 19.6750, lon: 73.6669 },
+                { name: 'Ghodbunder Fort', lat: 19.2861, lon: 72.8625 },
+                { name: 'Ghosalegad Fort', lat: 18.7336, lon: 73.4053 },
+                { name: 'Goa Fort', lat: 15.4909, lon: 73.8278, img:'https://www.fabhotels.com/blog/wp-content/uploads/2019/06/Aguada-Fort_600.jpg'},
+                { name: 'Gondhanapur Fort', lat: 20.6781, lon: 76.7674 },
+                { name: 'Gopalgad', lat: 17.1086, lon: 73.2650 },
+                { name: 'Gorakhgad', lat: 19.0648, lon: 73.4084 },
+                { name: 'Gowalkot', lat: 17.5272, lon: 73.5106 },
+                { name: 'Gumtara Fort', lat: 19.3046, lon: 72.9157 },
+                { name: 'Gunvantgad', lat: 19.8312, lon: 73.5008 },
+                { name: 'Hadsar', lat: 19.4078, lon: 73.8446 },
+                { name: 'Hargad (Nashik)', lat: 20.3486, lon: 74.2372 },
+                { name: 'Harihar Fort (Nashik)', lat: 19.9000, lon: 73.4500 },
+                { name: 'Harishchandragad', lat: 19.3900, lon: 73.7200 },
+                { name: 'Hatgad', lat: 20.4001, lon: 73.8032 },
+                { name: 'Indori Fort (Pune)', lat: 18.6816, lon: 73.6314 },
+                { name: 'Indrai Fort (Nashik)', lat: 20.0496, lon: 73.6097 },
+                { name: 'Irshalgad (Raigad)', lat: 18.9864, lon: 73.2672 },
+                { name: 'Jadhavgadh (Pune)', lat: 18.4074, lon: 74.0573 },
+                { name: 'Jaigad Fort (Ratnagiri)', lat: 17.2939, lon: 73.2257 },
+                { name: 'Jamgaon Fort', lat: 19.5587, lon: 73.9767 },
+                { name: 'Jamner Fort', lat: 20.8126, lon: 75.7775 },
+                { name: 'Janjira Fort (Raigad)', lat: 18.3026, lon: 72.9666 },
+                { name: 'Javlya Fort', lat: 19.6046, lon: 73.6835 },
+                { name: 'Jivdhan', lat: 19.5737, lon: 73.7352 },
+                { name: 'Kaladgad', lat: 17.8812, lon: 73.8050 },
+                { name: 'Kalanandigad', lat: 17.8667, lon: 73.9500 },
+                { name: 'Kalavantin Durg', lat: 19.0110, lon: 73.2405 },
+                { name: 'Kaldurg Fort', lat: 19.8670, lon: 72.9605 },
+                { name: 'Kalyangad/Nandgiri', lat: 17.6833, lon: 73.9700 },
+                { name: 'Kamalgad', lat: 17.9324, lon: 73.7798 },
+                { name: 'Kamandurg Fort', lat: 19.3656, lon: 72.8956 },
+                { name: 'Kandhar Fort', lat: 18.9190, lon: 77.2026 },
+                { name: 'Kanchana Fort', lat: 18.5647, lon: 73.4568 },
+                { name: 'Kanhera Fort (Chalisgaon, Jalgaon)', lat: 20.4666, lon: 75.0166 },
+                { name: 'Kankrala', lat: 20.7096, lon: 74.0357 },
+                { name: 'Karnala Fort', lat: 18.8961, lon: 73.1408 },
+                { name: 'Kavnai Fort', lat: 19.8301, lon: 73.6485 },
+                { name: 'Kelve Fort', lat: 19.6237, lon: 72.7304 },
+                { name: 'Kenjalgad', lat: 17.7891, lon: 73.8710 },
+                { name: 'Khanderi', lat: 18.7076, lon: 72.8644 },
+                { name: 'Kharda / Shivpattan Fort', lat: 18.3574, lon: 75.4504 },
+                { name: 'Kohoj Fort', lat: 19.7528, lon: 73.1533 },
+                { name: 'Kolaba Fort', lat: 18.6339, lon: 72.8739 },
+                { name: 'Koldher Fort', lat: 20.4064, lon: 73.7798 },
+                { name: 'Konkan Diva Fort', lat: 18.4213, lon: 73.2495 },
+                { name: 'Korigad', lat: 18.6432, lon: 73.4071 },
+                { name: 'Korlai Fort', lat: 18.5081, lon: 72.9289 },
+                { name: 'Kothaligad / Bhairavgad (Kothali)', lat: 18.9701, lon: 73.4216 },
+                { name: 'Kulang Fort', lat: 19.6741, lon: 73.6522 },
+                { name: 'Kunjargad', lat: 19.2936, lon: 73.7621 },
+                { name: 'Kurdugad', lat: 18.4741, lon: 73.4756 },
+                { name: 'Laling Fort', lat: 20.8826, lon: 74.7743 },
+                { name: 'Lingana', lat: 18.1592, lon: 73.5740 },
+                { name: 'Lohagad', lat: 18.6947, lon: 73.4885 },
+                { name: 'Machindragad', lat: 16.9540, lon: 74.1558 },
+                { name: 'Machnur Fort', lat: 17.3592, lon: 75.4384 },
+                { name: 'Madangad Fort', lat: 19.5641, lon: 73.6042 },
+                { name: 'Madh Fort', lat: 19.1342, lon: 72.8013 },
+                { name: 'Mahim Fort', lat: 19.0344, lon: 72.8332 },
+                { name: 'Mahimangad', lat: 17.6726, lon: 74.5046 },
+                { name: 'Mahipalgad', lat: 16.5478, lon: 74.3790 },
+                { name: 'Mahipatgad', lat: 17.8458, lon: 73.6743 },
+                { name: 'Mahuli', lat: 19.4160, lon: 73.2855 },
+                { name: 'Mahur Fort', lat: 19.8536, lon: 77.9276 },
+                { name: 'Mailagad Fort (Buldhana district)', lat: 20.7231, lon: 76.1831 },
+                { name: 'Makrandgad', lat: 17.9420, lon: 73.6055 },
+                { name: 'Malanggad', lat: 19.0644, lon: 73.1769 },
+                { name: 'Malegaon Fort', lat: 20.5547, lon: 74.5282 },
+                { name: 'Malhargad/Sonori Fort', lat: 18.4216, lon: 74.1112 },
+                { name: 'Manaranjan Fort', lat: 18.6990, lon: 73.3685 },
+                { name: 'Mandangad Fort', lat: 17.9895, lon: 73.1806 },
+                { name: 'Mangad Fort/Fort Mangad', lat: 18.3457, lon: 73.2319 },
+                { name: 'Mangalgad/Kangori fort', lat: 18.2703, lon: 73.4054 },
+                { name: 'Mangi-Tungi', lat: 20.9506, lon: 74.2150 },
+                { name: 'Manikgad (Chandrapur)', lat: 20.0534, lon: 79.4113 },
+                { name: 'Manikgad (Raigad)', lat: 18.8604, lon: 73.2250 },
+                { name: 'Manjarsubha Fort', lat: 19.9896, lon: 73.7448 },
+                { name: 'Mankigad Fort', lat: 18.7294, lon: 73.4590 },
+                { name: 'Manohargad-Mansantoshgad', lat: 17.6852, lon: 73.6853 },
+                { name: 'Markanda Fort', lat: 19.9707, lon: 73.7498 },
+                { name: 'Mazagon Fort', lat: 18.9686, lon: 72.8294 },
+                { name: 'Metghar Fort, Nashik', lat: 19.9975, lon: 73.7875 },
+                { name: 'Mohandar fort/Shidka fort', lat: 19.5766, lon: 73.7620 },
+                { name: 'Mohangad', lat: 18.2934, lon: 73.5403 },
+                { name: 'Mora fort', lat: 18.7361, lon: 72.8750 },
+                { name: 'Morgiri Fort', lat: 18.6162, lon: 73.3994 },
+                { name: 'Mrugagad', lat: 18.6318, lon: 73.4843 },
+                { name: 'Mulher', lat: 20.7520, lon: 74.1050 },
+                { name: 'Naldurg Fort', lat: 17.8167, lon: 76.2817 },
+                { name: 'Nanded fort', lat: 19.1485, lon: 77.3000 },
+                { name: 'Nandoshi fort', lat: 19.2500, lon: 73.4500 },
+                { name: 'Narayangad', lat: 19.0756, lon: 73.6436 },
+                { name: 'Narnala', lat: 21.1500, lon: 77.0333 },
+                { name: 'Narsimhagad', lat: 16.8500, lon: 74.6500 },
+                { name: 'Nhavigad', lat: 20.7500, lon: 74.1500 },
+                { name: 'Nimgiri-Hanumantgad fort', lat: 18.8500, lon: 73.6500 },
+                { name: 'Nivati fort', lat: 16.2232, lon: 73.4404 },
+                { name: 'Pabargad', lat: 19.2833, lon: 73.7167 },
+                { name: 'Padargad', lat: 19.0220, lon: 73.4231 },
+                { name: 'Padmadurg', lat: 18.4890, lon: 72.9330 },
+                { name: 'Padmdurang fort', lat: 19.1080, lon: 72.7350 },
+                { name: 'Palashi Fort', lat: 19.7198, lon: 73.7433 },
+                { name: 'Palgad', lat: 18.7900, lon: 73.3400 },
+                { name: 'Pandavgad', lat: 17.7393, lon: 73.9647 },
+                { name: 'Panhala Fort', lat: 16.8122, lon: 74.1026 },
+                { name: 'Paranda Fort', lat: 18.2651, lon: 76.2415 },
+                { name: 'Pargadh', lat: 17.0786, lon: 73.8556 },
+                { name: 'Parola Fort', lat: 20.8789, lon: 75.1169 },
+                { name: 'Patta Fort', lat: 19.7438, lon: 73.8180 },
+                { name: 'Pavangad', lat: 16.7958, lon: 74.1081 },
+                { name: 'Pemgiri Fort/ Shahagad', lat: 19.3412, lon: 74.6226 },
+                { name: 'Pimpalgaon Raja Fort, Buldhana', lat: 20.7333, lon: 76.1167 },
+                { name: 'Pimpaldoh Fort, Buldhana', lat: 20.9667, lon: 76.2167 },
+                { name: 'Pisola fort', lat: 20.7600, lon: 74.2100 },
+                { name: 'Prabalgad', lat: 18.9643, lon: 73.2232 },
+                { name: 'Prachitgad', lat: 17.2082, lon: 73.7090 },
+                { name: 'Pratapgad', lat: 17.9376, lon: 73.6121 },
+                { name: 'Purandar fort', lat: 18.2785, lon: 73.9756 },
+                { name: 'Purnagad', lat: 16.5565, lon: 73.3541 },
+                { name: 'Raigad Fort', lat: 18.2342, lon: 73.4423 },
+                { name: 'Raireshwar', lat: 18.0884, lon: 73.7813 },
+                { name: 'Rajgad Fort', lat: 18.2454, lon: 73.6738 },
+                { name: 'Rajdher fort', lat: 19.5700, lon: 73.7000 },
+                { name: 'Ramshej fort', lat: 20.0110, lon: 73.7033 },
+                { name: 'Ramtek', lat: 21.4003, lon: 79.3270 },
+                { name: 'Rangana Fort', lat: 16.1291, lon: 73.8865 },
+                { name: 'Rasalgad', lat: 17.8483, lon: 73.4861 },
+                { name: 'Ratandurg fort', lat: 16.9914, lon: 73.3028 },
+                { name: 'Ratangad', lat: 19.5190, lon: 73.7277 },
+                { name: 'Ratnagiri', lat: 16.9902, lon: 73.3120 },
+                { name: 'Ravlya Fort', lat: 20.7956, lon: 74.0860 },
+                { name: 'Revdanda fort', lat: 18.5431, lon: 72.9305 },
+                { name: 'Riwa Fort', lat: 19.0447, lon: 72.8513 },
+                { name: 'Rohida fort', lat: 18.2057, lon: 73.6012 },
+                { name: 'Sagargad', lat: 18.6322, lon: 73.2245 },
+                { name: 'Sajjangad', lat: 17.6697, lon: 73.9967 },
+                { name: 'Sakharkherda Fort, Buldhana', lat: 20.6364, lon: 76.1270 },
+                { name: 'Sakshigad', lat: 19.3410, lon: 73.1375 },
+                { name: 'Salher', lat: 20.7377, lon: 73.9827 },
+                { name: 'Salota fort', lat: 20.7450, lon: 73.9792 },
+                { name: 'Samangad', lat: 16.2776, lon: 74.0300 },
+                { name: 'Sangram Durg', lat: 17.8519, lon: 73.7188 },
+                { name: 'Santoshgad', lat: 17.5995, lon: 74.2460 },
+                { name: 'Sarasgad', lat: 18.5152, lon: 73.2708 },
+                { name: 'Sarjekot fort', lat: 16.9881, lon: 73.3000 },
+                { name: 'Sewri Fort', lat: 19.0022, lon: 72.8633 },
+                { name: 'Shaniwar Wada', lat: 18.5194, lon: 73.8553 },
+                { name: 'Shirgaon Fort', lat: 19.7103, lon: 72.7082 },
+                { name: 'Shivgad', lat: 16.3667, lon: 74.1833 },
+                { name: 'Shivneri', lat: 19.2041, lon: 73.8744 },
+                { name: 'Shrivardhan Fort', lat: 18.5179, lon: 73.2733 },
+                { name: 'Siddhagad', lat: 19.0928, lon: 73.3662 },
+                { name: 'Sindhudurg Fort', lat: 16.0398, lon: 73.4669 },
+                { name: 'Saurabh Fort', lat: 18.9986, lon: 73.5014 },
+                { name: 'Sinhagad', lat: 18.3650, lon: 73.7552 },
+                { name: 'Sion Hillock Fort', lat: 19.0450, lon: 72.8650 },
+                { name: 'Sitabuldi Fort', lat: 21.1481, lon: 79.0840 },
+                { name: 'Solapur Fort', lat: 17.6599, lon: 75.9064 },
+                { name: 'Sondai fort', lat: 19.0623, lon: 73.3054 },
+                { name: 'Songir', lat: 21.0694, lon: 74.5660 },
+                { name: 'Songiri', lat: 19.0000, lon: 73.2500 },
+                { name: 'Sudhagad', lat: 18.5252, lon: 73.3722 },
+                { name: 'Sumargad', lat: 17.8083, lon: 73.6714 },
+                { name: 'Surgad', lat: 18.4426, lon: 73.2315 },
+                { name: 'Suvarnadurg', lat: 17.8290, lon: 73.1061 },
+                { name: 'Tailbaila fort', lat: 18.5371, lon: 73.3740 },
+                { name: 'Takmak fort', lat: 19.4620, lon: 73.3800 },
+                { name: 'Talagad', lat: 18.3423, lon: 73.0066 },
+                { name: 'Tandulwadi fort', lat: 19.8085, lon: 72.8875 },
+                { name: 'Tankai fort', lat: 19.7833, lon: 73.5500 },
+                { name: 'Tarapur fort', lat: 19.8565, lon: 72.6820 },
+                { name: 'Terekhol Fort', lat: 15.7267, lon: 73.6842 },
+                { name: 'Thalner', lat: 21.2233, lon: 74.9194 },
+                { name: 'Tikona', lat: 18.5842, lon: 73.5110 },
+                { name: 'Tipagad (Gadchiroli)', lat: 20.3056, lon: 80.2634 },
+                { name: 'Torna Fort', lat: 18.2606, lon: 73.6444 },
+                { name: 'Tringalwadi', lat: 19.7254, lon: 73.5333 },
+                { name: 'Trymbakgad', lat: 19.9421, lon: 73.5293 },
+                { name: 'Tung Fort', lat: 18.6439, lon: 73.4770 },
+                { name: 'Udgir Fort', lat: 18.3936, lon: 77.1130 },
+                { name: 'Underi', lat: 18.7064, lon: 72.9124 },
+                { name: 'Vaghera Fort', lat: 21.3336, lon: 73.3475 },
+                { name: 'Vairagad Fort', lat: 20.1934, lon: 79.7508 },
+                { name: 'Vairatgad Fort', lat: 17.7080, lon: 73.7730 },
+                { name: 'Vajragad', lat: 18.3581, lon: 73.7972 },
+                { name: 'Vandan Fort (Satara)', lat: 17.6946, lon: 73.8843 },
+                { name: 'Vardhangad Fort', lat: 17.4500, lon: 74.4500 },
+                { name: 'Varugad', lat: 17.6706, lon: 74.0421 },
+                { name: 'Vasai Fort/Bassein Fort', lat: 19.3260, lon: 72.8085 },
+                { name: 'Vasantgad', lat: 17.4625, lon: 73.8950 },
+                { name: 'Vasota Fort/Vyaghragad', lat: 17.7032, lon: 73.7203 },
+                { name: 'Vijaydurg Fort', lat: 16.5062, lon: 73.3365 },
+                { name: 'Vijaygad Fort', lat: 16.9671, lon: 73.3203 },
+                { name: 'Vikatgad', lat: 19.0086, lon: 73.2334 },
+                { name: 'Visapur Fort', lat: 18.7156, lon: 73.4873 },
+                { name: 'Vishalgad/Khelna Fort', lat: 16.9577, lon: 73.7689 },
+                { name: 'Worli Fort', lat: 19.0175, lon: 72.8147 },
+                { name: 'Yashwantgad Fort', lat: 15.8230, lon: 73.9067 },    
+        
+        ];
+
+        spots.forEach(spot => {
+            L.marker([spot.lat, spot.lon]).addTo(map)
+                .bindPopup(`
+                    <b>${spot.name}</b><br>
+                    <img src="${spot.img}" alt="${spot.name}">
+                `);
+        });
+
+        // Map movement function
+        function moveMap(x, y) {
+            var currentCenter = map.getCenter();
+            var latOffset = y * 0.3;  
+            var lonOffset = x * 0.3;
+            var newCenter = [currentCenter.lat + latOffset, currentCenter.lng + lonOffset];
+            map.panTo(newCenter);
+        }
+    </script>
+</body>
+</html>
