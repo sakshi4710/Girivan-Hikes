@@ -236,8 +236,9 @@ button:hover {
         <ul>
             <li><a href="index.html">Home &emsp;</a></li>
             <li><a href="exploreguide.html">Explore Guide &emsp;</a></li>
-            <li><a href="blog.html">Explore Blogs</a></li>
+            <li><a href="exploretrek.html">Explore Treks</a></li>
             <li><a href="upcomingtrek.html">Upcoming Treks</a></li>
+            <li><a href="map.html">Descover Map &emsp;</a></li>
             <li><a href="faq.html">FAQs</a></li>
         </ul>
     </nav>
@@ -327,7 +328,7 @@ button:hover {
                     <input type="email" id="email" required placeholder="Enter your registered guide email">
                 </div>
                 <div class="form-group">
-                    <label for="instagram">📸 Instagram (Optional)</label>
+                    <label for="instagram">Give whatsApp or instagram link</label>
                     <input type="url" id="instagram">
                 </div>
             </div>
@@ -356,16 +357,26 @@ button:hover {
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getFirestore, collection, getDocs, addDoc, query, where } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
     
-        // ✅ Firebase Configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-            apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
-            authDomain: "girivan-hikes.firebaseapp.com",
-            projectId: "girivan-hikes",
-            storageBucket: "girivan-hikes.appspot.com",
-            messagingSenderId: "51100764191",
-            appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
-            measurementId: "G-RWSFVY9KTW"
+          apiKey: "AIzaSyDeMnajXmDStMpihzxuYUikzz5oilFw_2c",
+          authDomain: "girivan-hikes.firebaseapp.com",
+          databaseURL: "https://girivan-hikes-default-rtdb.firebaseio.com",
+          projectId: "girivan-hikes",
+          storageBucket: "girivan-hikes.firebasestorage.app",
+          messagingSenderId: "51100764191",
+          appId: "1:51100764191:web:4fc2e80b36afecb295ad2a",
+          measurementId: "G-RWSFVY9KTW"
         };
+      
+        // Initialize Firebase
+        const analytics = getAnalytics(app);
     
         // ✅ Initialize Firebase
         const app = initializeApp(firebaseConfig);
